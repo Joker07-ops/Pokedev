@@ -33,9 +33,30 @@
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background var(--transition);
+  transition: background var(--transition), transform 0.2s;
 }
 
 .retry:hover {
   background: var(--accent-hover);
+  transform: scale(1.03);
+}
+
+@media (max-width: 480px) {
+  .icon {
+    font-size: 2.5rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .message {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+  }
+
+  .retry {
+    padding: 0.55rem 1.5rem;
+    font-size: 0.9rem;
+  }
 }

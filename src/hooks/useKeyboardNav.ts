@@ -18,6 +18,8 @@ export function useKeyboardNav(currentName: string | undefined) {
   useEffect(() => {
     if (!currentName) return;
 
+    let stale = false;
+
     const handler = async (e: KeyboardEvent) => {
       if (
         e.target instanceof HTMLInputElement ||
@@ -25,7 +27,12 @@ export function useKeyboardNav(currentName: string | undefined) {
       )
         return;
 
+      // Don't handle if a dialog (3D viewer) is open
+      if ((e.target as HTMLElement)?.closest("[role='dialog']")) return;
+
       const names = await getNames();
+      if (stale) return;
+
       const idx = names.indexOf(currentName);
       if (idx === -1) return;
 
@@ -39,6 +46,9 @@ export function useKeyboardNav(currentName: string | undefined) {
     };
 
     window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    return () => {
+      stale = true;
+      window.removeEventListener("keydown", handler);
+    };
   }, [currentName, navigate]);
 }

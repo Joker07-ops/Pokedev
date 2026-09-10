@@ -276,7 +276,7 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--accent);
-  background: rgba(11, 14, 20, 0.85);
+  background: rgba(10, 10, 10, 0.9);
   padding: 0.35rem 1rem;
   border-radius: 999px;
   border: 1px solid rgba(59, 130, 246, 0.2);
@@ -513,7 +513,27 @@
 .statExcellent .statBarFill { box-shadow: 0 0 8px color-mix(in srgb, var(--bar-color, var(--accent)), transparent 60%); }
 .statGreat .statBarFill { box-shadow: 0 0 6px color-mix(in srgb, var(--bar-color, var(--accent)), transparent 70%); }
 
-/* ===== Responsive ===== */
+/* ===== Tablet ===== */
+@media (max-width: 768px) {
+  .cardHeader {
+    padding: 1.5rem 1.75rem 0;
+  }
+
+  .layout {
+    padding: 1.25rem 1.75rem 1.75rem;
+    gap: 1.5rem;
+  }
+
+  .statsSection {
+    padding: 0 1.75rem 2rem;
+  }
+
+  .cardName {
+    font-size: clamp(1.7rem, 5vw, 2.5rem);
+  }
+}
+
+/* ===== Mobile ===== */
 @media (max-width: 640px) {
   .cardHeader {
     padding: 1.5rem 1.25rem 0;
@@ -548,8 +568,27 @@
   .metaValue {
     font-size: 0.95rem;
   }
+
+  .cardName {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+
+  .topBar {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .kbdHint {
+    display: none;
+  }
+
+  .navBtn {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+  }
 }
 
+/* ===== Small Mobile ===== */
 @media (max-width: 380px) {
   .cardName {
     font-size: 1.6rem;
@@ -562,6 +601,19 @@
 
   .statName {
     font-size: 0.72rem;
+  }
+
+  .metaGrid {
+    gap: 0.3rem;
+  }
+
+  .metaCard {
+    padding: 0.65rem 0.3rem;
+  }
+
+  .typeCard {
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
   }
 }
 

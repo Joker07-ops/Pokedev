@@ -70,6 +70,19 @@
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 }
 
+.spritePlaceholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
 .name {
   font-size: 0.78rem;
   font-weight: 600;
@@ -77,9 +90,30 @@
   color: var(--text-primary);
 }
 
+/* ===== Tablet ===== */
+@media (min-width: 641px) and (max-width: 768px) {
+  .wrapper {
+    padding: 1.25rem 1.75rem 1.5rem;
+  }
+
+  .sprite {
+    width: 56px;
+    height: 56px;
+  }
+}
+
+/* ===== Mobile ===== */
 @media (max-width: 640px) {
   .wrapper {
     padding: 1.25rem;
+  }
+
+  .chain {
+    gap: 0.35rem;
+  }
+
+  .stage {
+    gap: 0.3rem;
   }
 
   .sprite {
@@ -89,5 +123,29 @@
 
   .node {
     padding: 0.5rem 0.65rem;
+  }
+
+  .name {
+    font-size: 0.7rem;
+  }
+
+  .arrow {
+    font-size: 1rem;
+  }
+}
+
+/* ===== Small Mobile ===== */
+@media (max-width: 380px) {
+  .sprite {
+    width: 40px;
+    height: 40px;
+  }
+
+  .node {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .name {
+    font-size: 0.65rem;
   }
 }

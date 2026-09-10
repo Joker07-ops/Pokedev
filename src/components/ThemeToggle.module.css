@@ -8,15 +8,28 @@
   border-radius: var(--radius-sm);
   background: var(--bg-card);
   cursor: pointer;
-  transition: background var(--transition), border-color var(--transition);
+  transition: background var(--transition), border-color var(--transition),
+    transform 0.2s;
 }
 
 .toggle:hover {
   background: var(--bg-card-hover);
   border-color: var(--accent);
+  transform: scale(1.05);
 }
 
 .icon {
   font-size: 1.2rem;
   line-height: 1;
+}
+
+@media (max-width: 480px) {
+  .toggle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .icon {
+    font-size: 1.1rem;
+  }
 }

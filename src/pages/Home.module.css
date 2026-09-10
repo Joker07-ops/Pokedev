@@ -107,7 +107,7 @@
   color: var(--text-primary);
   font-size: 0.95rem;
   outline: none;
-  transition: border-color var(--transition);
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
 
 .searchInput::placeholder {
@@ -117,6 +117,7 @@
 
 .searchInput:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .searchClear {
@@ -147,13 +148,27 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 1rem;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 481px) and (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
     gap: 1.5rem;
   }
 }
@@ -193,4 +208,67 @@
   font-size: 0.9rem;
   color: var(--text-secondary);
   font-weight: 500;
+}
+
+/* ========== Mobile ========== */
+@media (max-width: 480px) {
+  .headerRow {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .headerActions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .searchBar {
+    margin-bottom: 1.5rem;
+  }
+
+  .searchInput {
+    padding: 0.6rem 0.9rem;
+    padding-right: 2.2rem;
+    font-size: 0.9rem;
+  }
+
+  .favFilter,
+  .compareLink {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .pagination {
+    gap: 0.6rem;
+    margin-top: 2rem;
+    padding: 1rem 0;
+  }
+
+  .pageBtn {
+    padding: 0.45rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .pageInfo {
+    font-size: 0.82rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .title {
+    font-size: 1.7rem;
+  }
+
+  .subtitle {
+    margin-bottom: 1.25rem;
+  }
 }

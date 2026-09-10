@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { spriteUrl } from "@/utils/pokemon";
+import { preloadImage } from "@/utils/imageCache";
 import { useTilt3D } from "@/hooks/useTilt3D";
 import FavoritesButton from "@/components/FavoritesButton";
 import styles from "./PokemonCard.module.css";
@@ -20,6 +21,10 @@ export default function PokemonCard({ name, id }: PokemonCardProps) {
 
   const numId = typeof id === "string" ? parseInt(id, 10) : id;
 
+  const handleHover = () => {
+    preloadImage(spriteUrl(id)).catch(() => {});
+  };
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.favWrap}>
@@ -32,6 +37,7 @@ export default function PokemonCard({ name, id }: PokemonCardProps) {
         ref={ref as React.RefObject<HTMLAnchorElement>}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
+        onMouseEnter={handleHover}
         style={tiltStyle}
       >
         <div className={styles.imageWrapper}>

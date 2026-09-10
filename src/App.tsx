@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 import Home from "@/pages/Home";
 import PokemonDetail from "@/pages/PokemonDetail";
 import Compare from "@/pages/Compare";
@@ -11,6 +11,18 @@ import { ThemeContext } from "@/context/ThemeContext";
 import { useFavorites } from "@/hooks/useFavorites";
 import { useTheme } from "@/hooks/useTheme";
 import styles from "./App.module.css";
+
+function AppRoutes() {
+  const location = useLocation();
+  return (
+    <Routes location={location} key={location.pathname}>
+      <Route path="/" element={<Home />} />
+      <Route path="/pokemon/:name" element={<PokemonDetail />} />
+      <Route path="/compare" element={<Compare />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
 
 function AppShell() {
   const fav = useFavorites();
@@ -36,12 +48,7 @@ function AppShell() {
 
         <main id="main-content" className={styles.main}>
           <ErrorBoundary>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/pokemon/:name" element={<PokemonDetail />} />
-              <Route path="/compare" element={<Compare />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <AppRoutes />
           </ErrorBoundary>
         </main>
       </ThemeContext.Provider>

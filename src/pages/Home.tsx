@@ -24,9 +24,17 @@ export default function Home() {
   const [allPokemon, setAllPokemon] = useState<PokemonListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [search, setSearch] = useState(searchParams.get("q") || "");
   const { favorites } = useFavoritesContext();
   const showFavorites = searchParams.get("fav") === "1";
+  const favCount = favorites.size;
+
+  // Sync search state from URL on back/forward navigation
+  const searchQuery = searchParams.get("q") || "";
+  const [search, setSearch] = useState(searchQuery);
+
+  useEffect(() => {
+    setSearch(searchQuery);
+  }, [searchQuery]);
 
   const page = parsePage(searchParams);
 
@@ -54,19 +62,25 @@ export default function Home() {
 
   useEffect(() => {
     let cancelled = false;
-    searchPokemon(search).then((data) => {
-      if (!cancelled) {
-        if (showFavorites) {
-          setFiltered(data.filter((p) => favorites.has(p.id)));
-        } else {
-          setFiltered(data);
+    searchPokemon(search)
+      .then((data) => {
+        if (!cancelled) {
+          if (showFavorites) {
+            setFiltered(data.filter((p) => favorites.has(p.id)));
+          } else {
+            setFiltered(data);
+          }
         }
-      }
-    });
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setFiltered([]);
+        }
+      });
     return () => {
       cancelled = true;
     };
-  }, [search, showFavorites, favorites]);
+  }, [search, showFavorites, favCount, favorites]);
 
   const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
   const currentPage = Math.min(page, totalPages || 1);
@@ -136,8 +150,8 @@ export default function Home() {
             onClick={toggleFavorites}
           >
             <HeartIcon size={14} filled /> Favorites{" "}
-            {favorites.size > 0 && (
-              <span className={styles.favCount}>{favorites.size}</span>
+            {favCount > 0 && (
+              <span className={styles.favCount}>{favCount}</span>
             )}
           </button>
           <Link to="/compare" className={styles.compareLink}>

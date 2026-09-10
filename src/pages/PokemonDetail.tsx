@@ -29,10 +29,12 @@ import {
 } from "@/components/Icons";
 import {
   spriteUrl,
+  homeSpriteUrl,
   TYPE_COLORS,
   formatHeight,
   formatWeight,
 } from "@/utils/pokemon";
+import { preloadImage } from "@/utils/imageCache";
 import styles from "./PokemonDetail.module.css";
 
 const STAT_MAX = 255;
@@ -99,26 +101,44 @@ export default function PokemonDetail() {
       return;
     }
 
+    let cancelled = false;
+
     getPokemonByName(name)
       .then((p) => {
-        setPokemon(p ?? null);
-        if (!p) setError(`Pokemon "${name}" not found.`);
-        setLoading(false);
+        if (!cancelled) {
+          setPokemon(p ?? null);
+          if (!p) setError(`Pokemon "${name}" not found.`);
+          setLoading(false);
+        }
       })
       .catch((err) => {
-        setError(
-          err instanceof Error ? err.message : "Failed to load Pokemon data.",
-        );
-        setLoading(false);
+        if (!cancelled) {
+          setError(
+            err instanceof Error ? err.message : "Failed to load Pokemon data.",
+          );
+          setLoading(false);
+        }
       });
 
-    getAllPokemon().then((list) => {
-      const idx = list.findIndex((p) => p.name === name);
-      setNeighbors({
-        prev: idx > 0 ? list[idx - 1].name : null,
-        next: idx < list.length - 1 ? list[idx + 1].name : null,
+    getAllPokemon()
+      .then((list) => {
+        if (!cancelled) {
+          const idx = list.findIndex((p) => p.name === name);
+          setNeighbors({
+            prev: idx > 0 ? list[idx - 1].name : null,
+            next: idx < list.length - 1 ? list[idx + 1].name : null,
+          });
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setNeighbors({ prev: null, next: null });
+        }
       });
-    });
+
+    return () => {
+      cancelled = true;
+    };
   }, [name]);
 
   if (loading) return <Loader />;
@@ -244,6 +264,7 @@ export default function PokemonDetail() {
             type="button"
             className={styles.imageSection}
             onClick={() => !imgError && setViewerOpen(true)}
+            onMouseEnter={() => { preloadImage(homeSpriteUrl(id)).catch(() => {}); }}
             aria-label={`Open 3D viewer for ${pokemon.name}`}
           >
             <div className={styles.imageAura} />
@@ -388,6 +409,7 @@ export default function PokemonDetail() {
         pokemonId={id}
         pokemonName={pokemon.name}
         types={types}
+        stats={stats}
         isOpen={viewerOpen}
         onClose={() => setViewerOpen(false)}
       />

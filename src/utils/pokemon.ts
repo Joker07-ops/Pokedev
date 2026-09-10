@@ -2,6 +2,14 @@ export function spriteUrl(id: number | string): string {
   return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 }
 
+export function homeSpriteUrl(id: number | string): string {
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${id}.png`;
+}
+
+export function officialArtworkUrl(id: number | string): string {
+  return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
+}
+
 export const TYPE_COLORS: Record<string, string> = {
   normal: "#A8A77A",
   fire: "#EE8130",

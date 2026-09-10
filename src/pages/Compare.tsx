@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import Loader from "@/components/Loader";
 import ErrorMessage from "@/components/ErrorMessage";
@@ -35,6 +35,29 @@ function CompareCard({
 }) {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+        setFilter("");
+      }
+    }
+    function handleEscape(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setOpen(false);
+        setFilter("");
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [open]);
 
   const filtered = useMemo(() => {
     if (!filter) return allNames;
@@ -44,7 +67,7 @@ function CompareCard({
 
   if (!pokemon) {
     return (
-      <div className={`${styles.emptySlot} ${styles[side]}`}>
+      <div className={`${styles.emptySlot} ${styles[side]}`} ref={dropdownRef}>
         <button
           type="button"
           className={styles.selectBtn}
@@ -89,6 +112,7 @@ function CompareCard({
   return (
     <div
       className={styles.pokemonCard}
+      ref={dropdownRef}
       style={
         {
           "--type-color": TYPE_COLORS[types[0]] || "#888",
@@ -297,19 +321,37 @@ export default function Compare() {
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
     if (leftName) {
-      getPokemonByName(leftName).then((p) => setLeftPokemon(p ?? null));
+      setLeftPokemon(null);
+      getPokemonByName(leftName)
+        .then((p) => {
+          if (!cancelled) setLeftPokemon(p ?? null);
+        })
+        .catch(() => {
+          if (!cancelled) setLeftPokemon(null);
+        });
     } else {
       setLeftPokemon(null);
     }
+    return () => { cancelled = true; };
   }, [leftName]);
 
   useEffect(() => {
+    let cancelled = false;
     if (rightName) {
-      getPokemonByName(rightName).then((p) => setRightPokemon(p ?? null));
+      setRightPokemon(null);
+      getPokemonByName(rightName)
+        .then((p) => {
+          if (!cancelled) setRightPokemon(p ?? null);
+        })
+        .catch(() => {
+          if (!cancelled) setRightPokemon(null);
+        });
     } else {
       setRightPokemon(null);
     }
+    return () => { cancelled = true; };
   }, [rightName]);
 
   const allNames = useMemo(() => allPokemon.map((p) => p.name), [allPokemon]);

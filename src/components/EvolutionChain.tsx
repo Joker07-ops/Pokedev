@@ -12,13 +12,21 @@ interface Props {
 
 export default function EvolutionChain({ pokemonName }: Props) {
   const chain = getEvolutionChain(pokemonName);
-  if (!chain || chain.length <= 1) return null;
-
   const [nameMap, setNameMap] = useState<Record<string, number>>({});
 
   useEffect(() => {
-    getNameToIdMap().then(setNameMap);
+    let cancelled = false;
+    getNameToIdMap()
+      .then((map) => {
+        if (!cancelled) setNameMap(map);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
   }, []);
+
+  if (!chain || chain.length <= 1) return null;
+
+  const hasData = Object.keys(nameMap).length > 0;
 
   return (
     <div className={styles.wrapper}>
@@ -35,12 +43,16 @@ export default function EvolutionChain({ pokemonName }: Props) {
               to={`/pokemon/${name}`}
               className={`${styles.node} ${name === pokemonName.toLowerCase() ? styles.current : ""}`}
             >
-              <img
-                src={nameMap[name] ? spriteUrl(nameMap[name]) : ""}
-                alt={name}
-                className={styles.sprite}
-                loading="lazy"
-              />
+              {hasData && nameMap[name] ? (
+                <img
+                  src={spriteUrl(nameMap[name])}
+                  alt={name}
+                  className={styles.sprite}
+                  loading="lazy"
+                />
+              ) : (
+                <div className={styles.spritePlaceholder} />
+              )}
               <span className={styles.name}>{name}</span>
             </Link>
           </div>

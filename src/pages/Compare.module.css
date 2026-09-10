@@ -83,7 +83,7 @@
   padding: 0.3rem 0.7rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: var(--radius-sm);
-  background: rgba(11, 14, 20, 0.8);
+  background: rgba(10, 10, 10, 0.85);
   color: var(--text-secondary);
   font-size: 0.72rem;
   font-weight: 600;
@@ -324,9 +324,31 @@
   color: var(--text-secondary);
 }
 
+/* ===== Tablet ===== */
+@media (min-width: 641px) and (max-width: 768px) {
+  .statsCompare {
+    padding: 1.5rem;
+  }
+
+  .statRow {
+    gap: 0.5rem;
+  }
+}
+
+/* ===== Mobile ===== */
 @media (max-width: 640px) {
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
   .slots {
     flex-direction: column;
+    gap: 1rem;
   }
 
   .vs {
@@ -340,6 +362,15 @@
     min-height: 240px;
   }
 
+  .cardImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .cardName {
+    font-size: 1rem;
+  }
+
   .statsCompare {
     padding: 1.25rem;
   }
@@ -347,5 +378,52 @@
   .statRow {
     grid-template-columns: 40px 1fr 40px;
     gap: 0.4rem;
+  }
+
+  .statValue {
+    font-size: 0.8rem;
+  }
+
+  .statName {
+    font-size: 0.68rem;
+  }
+
+  .metaVal {
+    font-size: 0.82rem;
+  }
+
+  .metaLabel {
+    font-size: 0.7rem;
+  }
+}
+
+/* ===== Small Mobile ===== */
+@media (max-width: 380px) {
+  .emptySlot,
+  .pokemonCard {
+    width: 155px;
+    min-height: 210px;
+  }
+
+  .cardLink {
+    padding: 1.25rem 0.75rem 0.75rem;
+  }
+
+  .cardImage {
+    width: 70px;
+    height: 70px;
+  }
+
+  .cardName {
+    font-size: 0.9rem;
+  }
+
+  .statRow {
+    grid-template-columns: 35px 1fr 35px;
+    gap: 0.3rem;
+  }
+
+  .sectionTitle {
+    font-size: 0.78rem;
   }
 }

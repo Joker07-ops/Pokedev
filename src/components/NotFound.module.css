@@ -41,3 +41,22 @@
 .link:hover {
   color: var(--accent-hover);
 }
+
+@media (max-width: 480px) {
+  .icon {
+    font-size: 2.5rem;
+  }
+
+  .title {
+    font-size: 3rem;
+  }
+
+  .message {
+    font-size: 0.9rem;
+    padding: 0 1rem;
+  }
+
+  .link {
+    font-size: 0.9rem;
+  }
+}

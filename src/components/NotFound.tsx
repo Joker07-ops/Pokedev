@@ -4,7 +4,7 @@ import styles from "./NotFound.module.css";
 
 export default function NotFound() {
   return (
-    <section className={styles.container} role="status">
+    <section className={styles.container} role="alert">
       <span className={styles.icon} aria-hidden="true">
         <SearchIcon size={48} />
       </span>
