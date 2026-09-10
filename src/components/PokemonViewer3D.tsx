@@ -75,7 +75,7 @@ export default function PokemonViewer3D({
         .then(() => { setCachedSrc(src); })
         .catch(() => { setImgError(true); });
       const t1 = setTimeout(() => setIsActive(true), 50);
-      const t2 = setTimeout(() => setLoaded(true), 600);
+      const t2 = setTimeout(() => setLoaded(true), 850);
       return () => { clearTimeout(t1); clearTimeout(t2); };
     } else {
       setIsActive(false);
@@ -225,7 +225,11 @@ export default function PokemonViewer3D({
 
         {/* Card wrapper */}
         <div
-          className={`${styles.cardWrapper} ${loaded ? styles.cardWrapperActive : ""}`}
+          className={`${styles.cardWrapper} ${
+            loaded ? styles.cardWrapperActive
+              : isActive ? `${styles.cardWrapperActive} ${styles.cardEntrance}`
+              : ""
+          }`}
           style={{
             transform: `rotateX(${rotX}deg) rotateY(${rotY}deg) scale(${zoom})`,
           }}
